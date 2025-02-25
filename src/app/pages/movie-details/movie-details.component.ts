@@ -124,7 +124,6 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   setReviewRating(value: number) {
-    // this.reviewForm.get('rating')?.setValue(value);
     this.movieReviewForm.patchValue({
       rating: value,
     });
