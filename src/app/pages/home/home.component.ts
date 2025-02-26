@@ -103,7 +103,11 @@ export class HomeComponent {
       next: (res) => {
         this.selectedLanguage = res;
         this.moviesList = [];
+        this.popularMoviesList = [];
+        this.upcomingMoviesList = [];
         this.fetchFavoriteMovies();
+        this.loadPopularMovies();
+        this.loadUpcomingMovies();
       },
       error: (err) => {
         console.error(err);
