@@ -42,6 +42,18 @@ export class MovieService {
     });
   }
 
+  public getUpcomingMovies(
+    language: string,
+    page: number
+  ): Observable<MovieResponse> {
+    const params = new HttpParams().set('language', language).set('page', page);
+
+    return this.http.get<MovieResponse>(`${this.apiUrl}/upcoming`, {
+      params: params,
+      headers: this.defaultHeaders,
+    });
+  }
+
   public getMovieDetailsById(id: number, language: string): Observable<Movie> {
     const params = new HttpParams().set('language', language);
 
