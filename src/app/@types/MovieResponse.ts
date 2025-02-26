@@ -1,6 +1,6 @@
 import { Movie } from './Movie';
 
-export type MoviePaginationResponse = {
+export type MovieResponse = {
   page: number;
   results: Movie[];
   total_pages: number;

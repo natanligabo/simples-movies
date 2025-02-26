@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Credits } from '../@types/Credits';
-import { MoviePaginationResponse } from '../@types/ListMovie';
+import { MovieResponse } from '../@types/MovieResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +21,10 @@ export class MovieService {
   public getTopRatedMovies(
     language: string,
     page: number
-  ): Observable<MoviePaginationResponse> {
+  ): Observable<MovieResponse> {
     const params = new HttpParams().set('language', language).set('page', page);
 
-    return this.http.get<MoviePaginationResponse>(`${this.apiUrl}/top_rated`, {
+    return this.http.get<MovieResponse>(`${this.apiUrl}/top_rated`, {
       params: params,
       headers: this.defaultHeaders,
     });
@@ -33,10 +33,10 @@ export class MovieService {
   public getPopularMovies(
     language: string,
     page: number
-  ): Observable<MoviePaginationResponse> {
+  ): Observable<MovieResponse> {
     const params = new HttpParams().set('language', language).set('page', page);
 
-    return this.http.get<MoviePaginationResponse>(`${this.apiUrl}/popular`, {
+    return this.http.get<MovieResponse>(`${this.apiUrl}/popular`, {
       params: params,
       headers: this.defaultHeaders,
     });
