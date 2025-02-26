@@ -25,6 +25,7 @@ import { MovieService } from '../../services/movie.service';
 export class HomeComponent {
   userFavoriteMovies: FavoriteMovie[] = [];
   moviesList: Movie[] = [];
+  popularMoviesList: Movie[] = [];
   selectedLanguage = { name: 'Português', code: 'pt-BR' };
 
   constructor(
@@ -38,6 +39,16 @@ export class HomeComponent {
 
     this.getCurrentLanguage();
     this.fetchFavoriteMovies();
+    this.loadPopularMovies();
+  }
+
+  loadPopularMovies() {
+    this.movieService
+      .getPopularMovies(this.selectedLanguage.code, 1)
+      .subscribe({
+        next: (data) => (this.popularMoviesList = data.results),
+        error: (err) => console.error(err),
+      });
   }
 
   fetchFavoriteMovies() {
@@ -86,6 +97,46 @@ export class HomeComponent {
       error: (err) => {
         console.error(err);
       },
+    });
+  }
+
+  isMovieFavorite(movieId: number): boolean {
+    return this.userFavoriteMovies.some((movie) => Number(movie.id) === movieId);
+  }
+
+  toggleFavorite(movie: Movie) {
+    if (this.isMovieFavorite(movie.id)) {
+      const favorite = this.userFavoriteMovies.find(
+        (fav) => fav.movieId === movie.id
+      );
+      if (favorite !== undefined) {
+        this.favoriteService
+          .deleteFavoriteMovie(String(favorite.id))
+          .subscribe({
+            next: () => {
+              this.updateFavorites();
+            },
+            error: (err) => console.error(err),
+          });
+      }
+    } else {
+      this.favoriteService
+        .createFavoriteMovie({ movieId: movie.id })
+        .subscribe({
+          next: () => {
+            this.updateFavorites();
+          },
+          error: (err) => console.error(err),
+        });
+    }
+  }
+
+  private updateFavorites(): void {
+    this.favoriteService.getFavorites().subscribe({
+      next: (data) => {
+        this.userFavoriteMovies = data;
+      },
+      error: (err) => console.error(err),
     });
   }
 }
