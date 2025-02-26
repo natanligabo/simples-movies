@@ -26,6 +26,7 @@ export class HomeComponent {
   userFavoriteMovies: FavoriteMovie[] = [];
   moviesList: Movie[] = [];
   popularMoviesList: Movie[] = [];
+  upcomingMoviesList: Movie[] = [];
   selectedLanguage = { name: 'Português', code: 'pt-BR' };
 
   constructor(
@@ -40,6 +41,7 @@ export class HomeComponent {
     this.getCurrentLanguage();
     this.fetchFavoriteMovies();
     this.loadPopularMovies();
+    this.loadUpcomingMovies();
   }
 
   loadPopularMovies() {
@@ -47,6 +49,15 @@ export class HomeComponent {
       .getPopularMovies(this.selectedLanguage.code, 1)
       .subscribe({
         next: (data) => (this.popularMoviesList = data.results),
+        error: (err) => console.error(err),
+      });
+  }
+
+  loadUpcomingMovies() {
+    this.movieService
+      .getUpcomingMovies(this.selectedLanguage.code, 1)
+      .subscribe({
+        next: (data) => (this.upcomingMoviesList = data.results),
         error: (err) => console.error(err),
       });
   }
@@ -101,7 +112,9 @@ export class HomeComponent {
   }
 
   isMovieFavorite(movieId: number): boolean {
-    return this.userFavoriteMovies.some((movie) => Number(movie.id) === movieId);
+    return this.userFavoriteMovies.some(
+      (movie) => Number(movie.id) === movieId
+    );
   }
 
   toggleFavorite(movie: Movie) {
