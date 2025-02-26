@@ -27,6 +27,7 @@ export class HomeComponent {
   moviesList: Movie[] = [];
   popularMoviesList: Movie[] = [];
   upcomingMoviesList: Movie[] = [];
+  recommendationMoviesList: Movie[] = [];
   selectedLanguage = { name: 'Português', code: 'pt-BR' };
 
   constructor(
@@ -67,6 +68,8 @@ export class HomeComponent {
       next: (data) => {
         this.moviesList = [];
         this.userFavoriteMovies = data;
+        this.loadRecommendationMovies();
+
         this.userFavoriteMovies.forEach((favoriteMovie) => {
           this.movieService
             .getMovieDetailsById(
@@ -83,6 +86,24 @@ export class HomeComponent {
       },
       error: (err) => console.error(err),
     });
+  }
+
+  loadRecommendationMovies() {
+    this.recommendationMoviesList = [];
+    this.userFavoriteMovies.forEach((fav) => {
+      this.loadRecommendationMovieById(fav.movieId);
+    });
+  }
+
+  loadRecommendationMovieById(movieId: number) {
+    this.movieService
+      .getMovieRecommendationById(this.selectedLanguage.code, 1, movieId)
+      .subscribe({
+        next: (data) => {
+          this.recommendationMoviesList.push(data.results[0]);
+        },
+        error: (err) => console.error(err),
+      });
   }
 
   removeFavoriteMovie(movie: Movie) {
@@ -108,6 +129,7 @@ export class HomeComponent {
         this.fetchFavoriteMovies();
         this.loadPopularMovies();
         this.loadUpcomingMovies();
+        this.loadRecommendationMovies();
       },
       error: (err) => {
         console.error(err);
