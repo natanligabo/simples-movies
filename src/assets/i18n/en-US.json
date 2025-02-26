@@ -17,6 +17,7 @@
       "seeMoreMoviesButton": "See movies"
     },
     "titleFavoriteMovies": "Your favorite movies",
+    "titleBasedOnFavorites": "Based on your favorites",
     "titlePopularMovies": "Popular",
     "titleUpcomingMovies": "Upcoming",
     "listEmpty": "You haven't added any movies to your favorites yet"
