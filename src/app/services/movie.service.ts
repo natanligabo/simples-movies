@@ -67,6 +67,19 @@ export class MovieService {
     });
   }
 
+  public getMovieSimilarById(
+    language: string,
+    page: number,
+    movieId: number
+  ): Observable<MovieResponse> {
+    const params = new HttpParams().set('language', language).set('page', page);
+
+    return this.http.get<MovieResponse>(`${this.apiUrl}/${movieId}/similar`, {
+      params: params,
+      headers: this.defaultHeaders,
+    });
+  }
+
   public getMovieDetailsById(id: number, language: string): Observable<Movie> {
     const params = new HttpParams().set('language', language);
 

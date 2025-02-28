@@ -28,6 +28,8 @@ export class HomeComponent {
   popularMoviesList: Movie[] = [];
   upcomingMoviesList: Movie[] = [];
   recommendationMoviesList: Movie[] = [];
+  similarMoviesList: Movie[] = [];
+  similarMovie!: Movie;
   selectedLanguage = { name: 'Português', code: 'pt-BR' };
 
   constructor(
@@ -83,6 +85,8 @@ export class HomeComponent {
               error: (err) => console.error(err),
             });
         });
+
+        this.loadRandomSimilarMovies();
       },
       error: (err) => console.error(err),
     });
@@ -93,6 +97,33 @@ export class HomeComponent {
     this.userFavoriteMovies.forEach((fav) => {
       this.loadRecommendationMovieById(fav.movieId);
     });
+  }
+
+  loadRandomSimilarMovies() {
+    this.similarMoviesList = [];
+    const randomMovieId =
+      this.userFavoriteMovies[this.getRandomFavoriteMovie].movieId;
+
+    this.movieService
+      .getMovieDetailsById(randomMovieId, this.selectedLanguage.code)
+      .subscribe({
+        next: (data) => (this.similarMovie = data),
+        error: (err) => console.error(err),
+      });
+
+    this.movieService
+      .getMovieSimilarById(this.selectedLanguage.code, 1, randomMovieId)
+      .subscribe({
+        next: (data) => {
+          this.similarMoviesList = data.results;
+          console.log(this.similarMoviesList);
+        },
+        error: (err) => console.error(err),
+      });
+  }
+
+  get getRandomFavoriteMovie(): number {
+    return Math.floor(Math.random() * this.userFavoriteMovies.length);
   }
 
   loadRecommendationMovieById(movieId: number) {

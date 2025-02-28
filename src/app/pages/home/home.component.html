@@ -98,6 +98,44 @@
         <movie-card
           [movie]="movie"
           [lang]="selectedLanguage"
+          [onlyPoster]="true"
+          [isFavorite]="isMovieFavorite(movie.id)"
+          (notifyMovie)="toggleFavorite($event)"
+        />
+        } @placeholder {
+        <div class="flex flex-col gap-4 w-full">
+          <div class="skeleton h-72 w-full"></div>
+          <div class="skeleton h-4"></div>
+          <div class="skeleton h-4 w-28"></div>
+          <div class="skeleton h-4"></div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <div class="flex justify-between">
+      <div class="flex items-center space-x-2">
+        <h2 class="text-2xl font-semibold">
+          Se você gostou de "{{ similarMovie.title }}", vai curtir esses:
+        </h2>
+      </div>
+      <div class="flex justify-center gap-2">
+        <kbd class="kbd">◀︎</kbd>
+        <kbd class="kbd">▶︎</kbd>
+      </div>
+    </div>
+
+    <div class="carousel carousel-center bg-white p-8 rounded-xl w-full gap-4">
+      @for (movie of similarMoviesList; track $index) {
+      <div class="carousel-item w-full sm:w-1/2 lg:w-1/3 xl:w-1/5">
+        @defer () {
+        <movie-card
+          [movie]="movie"
+          [lang]="selectedLanguage"
+          [onlyPoster]="true"
           [isFavorite]="isMovieFavorite(movie.id)"
           (notifyMovie)="toggleFavorite($event)"
         />
@@ -135,6 +173,7 @@
         <movie-card
           [movie]="movie"
           [lang]="selectedLanguage"
+          [onlyPoster]="true"
           [isFavorite]="isMovieFavorite(movie.id)"
           (notifyMovie)="toggleFavorite($event)"
         />
@@ -172,6 +211,7 @@
         <movie-card
           [movie]="movie"
           [lang]="selectedLanguage"
+          [onlyPoster]="true"
           [isFavorite]="isMovieFavorite(movie.id)"
           (notifyMovie)="toggleFavorite($event)"
         />

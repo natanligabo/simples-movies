@@ -15,6 +15,7 @@ export class MovieCardComponent {
   @Input() isFavorite: boolean = false;
   isLoading: boolean = false;
   @Input() lang!: Language;
+  @Input() onlyPoster: boolean = false;
   @Output() notifyMovie = new EventEmitter<Movie>();
 
   sendMovie(): void {
