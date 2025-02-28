@@ -2,23 +2,27 @@
   [src]="'https://image.tmdb.org/t/p/original/' + movie.poster_path"
   [alt]="movie.title"
   [routerLink]="['/movie', movie.id]"
-  class="poster object-cover rounded-xl hover:scale-[1.05] transition cursor-pointer w-full"
+  [class]="
+    'poster object-cover rounded-xl hover:scale-[1.05] transition cursor-pointer w-full'
+  "
 />
+@if (!onlyPoster) {
 <div class="mt-3">
   <h3 class="text-2xl font-semibold">{{ movie.title }}</h3>
   <div class="flex justify-end">
     @if (!isLoading) {
-      <img
-        [src]="
-          isFavorite ? '/assets/icon_fill_heart.svg' : '/assets/icon_heart.svg'
-        "
-        [alt]="movie.title"
-        class="size-4 hover:scale-[1.2] cursor-pointer"
-        (click)="sendMovie()"
-      />
+    <img
+      [src]="
+        isFavorite ? '/assets/icon_fill_heart.svg' : '/assets/icon_heart.svg'
+      "
+      [alt]="movie.title"
+      class="size-4 hover:scale-[1.2] cursor-pointer"
+      (click)="sendMovie()"
+    />
     } @else {
-      <span class="loading loading-spinner loading-xs text-blue-700"></span>
+    <span class="loading loading-spinner loading-xs text-blue-700"></span>
     }
   </div>
   <p>{{ movie.release_date | date : "longDate" : "" : lang.code }}</p>
 </div>
+}
